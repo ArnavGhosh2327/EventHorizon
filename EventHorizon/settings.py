@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Plugins
+    # Third-party apps
+    'rest_framework',
+    'rest_framework.authtoken',
     'oauth2_provider',
     'allauth',
     'allauth.account',
@@ -45,7 +47,9 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.google',
     # Local Apps
-
+    'events',
+    'users',
+    'registrations',
 ]
 
 MIDDLEWARE = [
@@ -135,4 +139,23 @@ STATIC_URL = 'static/'
 if os.getenv("EMAIL2CONSOLE", False) == 'True':
     EMAIL_BACKEND="django.core.mail.backends.console.EmailBackend"
 
-ACCOUNT_EMAIL_REQUIRED=True
+# Django Allauth settings
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'username*', 'password1*', 'password2*']
+
+# Django REST Framework
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 20,
+    'DEFAULT_FILTER_BACKENDS': [
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter',
+    ],
+}
+
