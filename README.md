@@ -28,6 +28,8 @@ Event Horizon is a complete event management platform that enables:
 ✅ **Multiple Venue Types** - Support for in-person, virtual (Zoom/Meet), and hybrid events
 ✅ **User Profiles** - Attendee and organizer profiles with social links
 ✅ **Authentication** - Email/password or social login (GitHub, Google)
+✅ **OAuth2 Support** - Build mobile/web apps in any language (Flutter, PHP, React Native, etc.)
+✅ **Multi-Factor Authentication** - TOTP support for Google Authenticator, Microsoft Authenticator, Authy, etc.
 
 ## How It Works
 
