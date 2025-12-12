@@ -20,7 +20,8 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get', 'put', 'patch'])
     def me(self, request):
         """Get or update current user's profile"""
-        profile = request.user.profile
+        # Ensure profile exists (should be created by signal, but just in case)
+        profile, created = UserProfile.objects.get_or_create(user=request.user)
         
         if request.method == 'GET':
             serializer = self.get_serializer(profile)
