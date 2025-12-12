@@ -37,15 +37,23 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Plugins
+    # Third-party apps
+    'rest_framework',
+    'rest_framework.authtoken',
     'oauth2_provider',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.google',
+    # MFA/OTP apps
+    'django_otp',
+    'django_otp.plugins.otp_totp',
+    'django_otp.plugins.otp_static',
     # Local Apps
-
+    'events',
+    'users',
+    'registrations',
 ]
 
 MIDDLEWARE = [
@@ -54,6 +62,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django_otp.middleware.OTPMiddleware',  # MFA middleware
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
@@ -135,4 +144,48 @@ STATIC_URL = 'static/'
 if os.getenv("EMAIL2CONSOLE", False) == 'True':
     EMAIL_BACKEND="django.core.mail.backends.console.EmailBackend"
 
-ACCOUNT_EMAIL_REQUIRED=True
+# Django Allauth settings
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'username*', 'password1*', 'password2*']
+
+# Django REST Framework
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 20,
+    'DEFAULT_FILTER_BACKENDS': [
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter',
+    ],
+}
+
+# OAuth2 Provider Settings
+OAUTH2_PROVIDER = {
+    # Scopes for OAuth2 applications
+    'SCOPES': {
+        'read': 'Read access to events and public data',
+        'write': 'Write access to create and update events',
+        'events': 'Full access to event management',
+        'registrations': 'Access to manage event registrations',
+        'profile': 'Access to user profile information',
+    },
+    # Default scopes for new applications
+    'DEFAULT_SCOPES': ['read'],
+    
+    # Token expiration settings
+    'ACCESS_TOKEN_EXPIRE_SECONDS': 36000,  # 10 hours
+    'REFRESH_TOKEN_EXPIRE_SECONDS': 86400 * 30,  # 30 days
+    
+    # Allow only confidential clients or public clients
+    'ALLOWED_REDIRECT_URI_SCHEMES': ['http', 'https', 'eventhorizon', 'myapp'],
+    
+    # OAuth2 backend settings
+    'OAUTH2_BACKEND_CLASS': 'oauth2_provider.oauth2_backends.JSONOAuthLibCore',
+}
+
