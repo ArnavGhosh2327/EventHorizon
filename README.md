@@ -1,28 +1,73 @@
 # Event Horizon 🌌
 
-A modern event management platform inspired by Luma, built with Django and Django REST Framework.
+**A Luma-inspired event management platform for creating, discovering, and attending events.**
 
-## Overview
+## What is Event Horizon?
 
-Event Horizon is a comprehensive event management solution that allows users to create, discover, and manage events. Whether you're hosting a small meetup or a large conference, Event Horizon provides all the tools you need.
+Event Horizon is a complete event management platform that enables:
 
-## Features
+### 🎯 For Event Organizers
+- **Post Events**: Create and publish events with full details (title, description, date/time, venue, capacity)
+- **Manage Registrations**: View attendee lists, confirm registrations, check-in attendees at the door
+- **Track Attendance**: See who's coming, who showed up, and manage waitlists
+- **Control Visibility**: Make events public, private, or unlisted
+- **Set Capacity Limits**: Control how many people can register
 
-### Current Features
-- 🔐 OAuth2 authentication (GitHub, Google)
-- 🎫 Event creation and management
-- 👥 User profiles and authentication
-- 📝 Event registration and RSVP system
-- 🔍 Event search and filtering
-- 📧 Email notifications
+### 👥 For Attendees
+- **Discover Events**: Browse and search for events by category, tags, or keywords
+- **Register/RSVP**: Sign up for events with a single click
+- **Manage Your Events**: View all events you're attending in one place
+- **Get Notifications**: Receive confirmations and updates about your events
 
-### Planned Features
-- 📅 Calendar integration (iCal export)
-- 📊 Event analytics dashboard
-- 🖼️ Event image uploads
-- 🎟️ Ticketing system
-- 💬 Event comments and discussions
-- 🌐 Multi-language support
+### 🔑 Core Luma-like Features
+✅ **Event Creation & Publishing** - Anyone can create and publish events
+✅ **Public Event Discovery** - Browse all public events without login
+✅ **Registration/RSVP System** - One-click signup for events
+✅ **Attendee Management** - Organizers can view and manage their attendee lists
+✅ **Capacity Tracking** - Automatic waitlist when events are full
+✅ **Multiple Venue Types** - Support for in-person, virtual (Zoom/Meet), and hybrid events
+✅ **User Profiles** - Attendee and organizer profiles with social links
+✅ **Authentication** - Email/password or social login (GitHub, Google)
+
+## How It Works
+
+### Creating an Event (Organizer)
+1. Sign up and log in
+2. Create a new event with:
+   - Event name and description
+   - Date, time, and duration
+   - Venue (physical address, online link, or both)
+   - Capacity limit (optional)
+3. Publish the event to make it discoverable
+4. Share the event link with potential attendees
+
+### Attending an Event (Attendee)
+1. Browse public events or search by category/tags
+2. Click "Register" on any event you want to attend
+3. View your registered events in "My Events"
+4. Receive confirmation and updates
+
+### Managing Attendees (Organizer)
+1. View your event's attendee list
+2. Confirm or waitlist registrations
+3. Check-in attendees when they arrive
+4. Track who showed up vs who registered
+
+## Real-World Use Cases
+
+- **Tech Meetups**: Host coding workshops, hackathons, or networking events
+- **Community Events**: Organize local gatherings, volunteer activities, or social events
+- **Business Conferences**: Manage professional conferences with capacity tracking
+- **Virtual Events**: Run online webinars, virtual conferences, or remote workshops
+- **Hybrid Events**: Combine in-person and online attendance
+
+## Coming Soon
+- 📧 Email notifications for registrations and reminders
+- 📅 Calendar integration (add to Google Calendar, iCal export)
+- 🖼️ Event cover images and photo galleries
+- 💳 Paid ticketing with Stripe integration
+- 📊 Analytics dashboard for organizers
+- 💬 Event comments and Q&A
 
 ## Tech Stack
 

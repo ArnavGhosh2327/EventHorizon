@@ -1,5 +1,66 @@
 # Event Horizon API Documentation
 
+## Overview
+
+This API enables the core Luma-like functionality:
+- **Organizers** can create, manage, and track events
+- **Attendees** can discover, register for, and manage their event attendance
+- **Anyone** can browse public events without authentication
+
+## Quick Start Workflows
+
+### For Organizers
+
+**1. Create an Event**
+```bash
+POST /api/events/
+Authorization: Token YOUR_TOKEN
+
+{
+  "title": "Tech Meetup - React Workshop",
+  "slug": "tech-meetup-react-workshop",
+  "description": "Learn React basics in this hands-on workshop",
+  "start_datetime": "2025-06-15T18:00:00Z",
+  "end_datetime": "2025-06-15T21:00:00Z",
+  "capacity": 50,
+  "status": "published"
+}
+```
+
+**2. View Your Event's Attendees**
+```bash
+GET /api/events/tech-meetup-react-workshop/attendees/
+Authorization: Token YOUR_TOKEN
+```
+
+**3. Check-in Attendees**
+Use the admin panel at `/admin/` to bulk check-in attendees or manage individual registrations.
+
+### For Attendees
+
+**1. Browse Events**
+```bash
+GET /api/events/
+# Optional filters: ?category=technology&time=upcoming
+```
+
+**2. Register for an Event**
+```bash
+POST /api/registrations/register/
+Authorization: Token YOUR_TOKEN
+
+{
+  "event_id": 1,
+  "dietary_requirements": "Vegetarian"
+}
+```
+
+**3. View Your Registered Events**
+```bash
+GET /api/events/my_events/
+Authorization: Token YOUR_TOKEN
+```
+
 ## Authentication
 
 The API supports token-based authentication. To obtain a token:

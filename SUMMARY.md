@@ -1,10 +1,95 @@
-# EventHorizon Development Summary
+# EventHorizon - Complete Luma-like Event Management Platform
 
-## What We Built
+## What This Is
 
-This PR transforms EventHorizon from a basic Django skeleton into a fully functional event management platform inspired by Luma. Here's what was implemented:
+Event Horizon is a **complete backend implementation** of Luma's core event management functionality:
 
-## 🎯 Core Features
+### ✅ Core Luma Features Implemented
+
+1. **Event Creation & Publishing**
+   - Organizers can create and publish events
+   - Set event details (title, description, date/time, venue, capacity)
+   - Control visibility (public/private/unlisted)
+   - Manage event status (draft → published → completed)
+
+2. **Event Discovery**
+   - Anyone can browse public events (no login required)
+   - Search by keywords
+   - Filter by category, tags, or time (upcoming/past)
+   - Paginated event listings
+
+3. **Registration/Signup System**
+   - Attendees can register for events with one click
+   - Automatic capacity tracking
+   - Waitlist management when events are full
+   - Capture attendee details (dietary requirements, notes)
+
+4. **Attendee Management**
+   - Organizers can view their event's attendee list
+   - Confirm or waitlist registrations
+   - Check-in attendees when they arrive
+   - Track attendance (who registered vs who showed up)
+
+5. **User Profiles**
+   - Extended user profiles with bio, location, social links
+   - Email preferences for notifications
+   - Organizer and attendee role support
+
+6. **Multiple Venue Types**
+   - Physical locations with addresses
+   - Virtual events (Zoom, Google Meet links)
+   - Hybrid events (both in-person and online)
+
+## How It Works (User Perspective)
+
+### For Organizers
+
+**Complete Workflow:**
+1. Sign up → Get auth token
+2. POST to `/api/events/` → Create event
+3. Event becomes discoverable at `/api/events/`
+4. Attendees register → You get notifications
+5. GET `/api/events/{slug}/attendees/` → View attendee list
+6. On event day → Check-in attendees via admin panel
+7. Track attendance and manage registrations
+
+**Key Feature: Attendee Management**
+```bash
+# View who's registered for your event
+GET /api/events/my-event-slug/attendees/
+
+# Response shows:
+[
+  {"username": "alice", "checked_in": false, "registration_date": "..."},
+  {"username": "bob", "checked_in": false, "registration_date": "..."}
+]
+```
+
+### For Attendees
+
+**Complete Workflow:**
+1. Browse events at `/api/events/` (no login needed)
+2. Find interesting event
+3. Sign up → Get auth token
+4. POST to `/api/registrations/register/` → Register for event
+5. Get confirmation
+6. View all your events at `/api/events/my_events/`
+7. Attend the event!
+
+**Key Feature: Event Discovery & Registration**
+```bash
+# Browse upcoming tech events
+GET /api/events/?category=technology&time=upcoming
+
+# Register for an event
+POST /api/registrations/register/
+{
+  "event_id": 1,
+  "dietary_requirements": "Vegetarian"
+}
+```
+
+## What's Included in This Implementation
 
 ### 1. Database Models (3 Django Apps)
 
