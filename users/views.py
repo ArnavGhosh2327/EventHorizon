@@ -4,9 +4,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
 from django_otp.plugins.otp_totp.models import TOTPDevice
-from django_otp.util import random_hex
 import qrcode
-import qrcode.image.svg
 from io import BytesIO
 import base64
 from .models import UserProfile
@@ -213,7 +211,7 @@ class MFAViewSet(viewsets.GenericViewSet):
             )
         
         # Delete all TOTP devices for this user
-        deleted_count = TOTPDevice.objects.filter(user=request.user).delete()[0]
+        deleted_count, _ = TOTPDevice.objects.filter(user=request.user).delete()
         
         return Response({
             'message': 'MFA disabled successfully',
@@ -226,19 +224,25 @@ class MFAViewSet(viewsets.GenericViewSet):
         """Generate backup codes for account recovery"""
         from django_otp.plugins.otp_static.models import StaticDevice, StaticToken
         
-        # Check if MFA is enabled
+        # Check if MFA is enabled and confirmed
         totp_device = TOTPDevice.objects.filter(user=request.user, confirmed=True).first()
         if not totp_device:
             return Response(
-                {'error': 'MFA must be enabled before generating backup codes'},
+                {'error': 'MFA must be enabled and confirmed before generating backup codes'},
                 status=status.HTTP_400_BAD_REQUEST
             )
         
         # Get or create static device for backup codes
         static_device, created = StaticDevice.objects.get_or_create(
             user=request.user,
-            name=f'{request.user.username}-backup'
+            name=f'{request.user.username}-backup',
+            defaults={'confirmed': True}
         )
+        
+        # Ensure device is confirmed
+        if not static_device.confirmed:
+            static_device.confirmed = True
+            static_device.save()
         
         # Clear existing tokens
         StaticToken.objects.filter(device=static_device).delete()
